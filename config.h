@@ -1,6 +1,7 @@
 /* See LICENSE file for copyright and license details. */
 
 #include <X11/XF86keysym.h>
+static char TERMINAL[] = "st";
 
 /* appearance */
 static const unsigned int borderpx  = 1;        /* border pixel of windows */
@@ -60,11 +61,12 @@ static const Layout layouts[] = {
 
 /* helper for spawning shell commands in the pre dwm-5.0 fashion */
 #define SHCMD(cmd) { .v = (const char*[]){ "/bin/sh", "-c", cmd, NULL } }
+#define TERMCMD(cmd) { .v = (const char*[]){ TERMINAL,"-e","/bin/sh","-c",cmd,NULL } }
 
 /* commands */
 static char dmenumon[2] = "0"; /* component of dmenucmd, manipulated in spawn() */
-static const char *dmenucmd[] = { "dmenu_run", "-m", dmenumon, "-fn", dmenufont, "-nb", normbgcolor, "-nf", normfgcolor, "-sb", selbordercolor, "-sf", selfgcolor, NULL };
-static const char *termcmd[]  = { "st", NULL };
+static const char *dmenucmd[] = { "dmenu_run", NULL };
+static const char *termcmd[]  = { TERMINAL, NULL };
 static const char *upvol[]   = { "/usr/bin/pactl", "set-sink-volume", "0", "+5%",NULL };
 static const char *downvol[] = { "/usr/bin/pactl", "set-sink-volume", "0", "-5%",NULL };
 static const char *mutevol[] = { "/usr/bin/pactl", "set-sink-mute","0", "toggle",NULL };
@@ -116,6 +118,8 @@ static Key keys[] = {
 	{ 0,               XF86XK_AudioRaiseVolume,   spawn, {.v = upvol    } },
 	{ 0,               XF86XK_MonBrightnessUp,    spawn, {.v = uplight  } },
 	{ 0,               XF86XK_MonBrightnessDown,  spawn, {.v = downlight} },
+	{ MODKEY,                       XK_w,     spawn,     SHCMD("chromium")},
+	{ MODKEY,                       XK_p,     spawn,     TERMCMD("cmus")},
 };
 
 /* button definitions */
