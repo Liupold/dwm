@@ -118,8 +118,11 @@ static Key keys[] = {
 	{ 0,               XF86XK_AudioRaiseVolume,   spawn, {.v = upvol    } },
 	{ 0,               XF86XK_MonBrightnessUp,    spawn, {.v = uplight  } },
 	{ 0,               XF86XK_MonBrightnessDown,  spawn, {.v = downlight} },
-	{ MODKEY,                       XK_w,     spawn,     SHCMD("chromium")},
-	{ MODKEY,                       XK_p,     spawn,     TERMCMD("cmus")},
+	{ MODKEY,                       XK_w,     spawn,     SHCMD("chromium")    },
+	{ MODKEY,                       XK_p,     spawn,     TERMCMD("cmus")      },
+	{ MODKEY,                       XK_slash, spawn,     TERMCMD("lf")        },
+	{ MODKEY,                       XK_n,     spawn,     TERMCMD("newsboat")  },
+	{ MODKEY,                       XK_s,     spawn,     SHCMD("dmenu-cmus")  },
 };
 
 /* button definitions */
