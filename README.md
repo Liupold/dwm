@@ -1,7 +1,17 @@
-dwm - dynamic window manager
+dwm - dynamic window manager (liupold's build)
 ============================
 dwm is an extremely fast, small, and dynamic window manager for X.
 
+
+# Features
+* Clean bar, (no window name)
+* Only show occupied tags
+* Gaps
+* Default bar (No bloat),`xsetroot`
+* xrdb (`pywal` supported)
+* Key bindings for media key (volume, brightness)
+
+![alt text](2020-10-03-085254_1920x1080_scrot.png)
 
 Requirements
 ------------
