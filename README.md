@@ -2,6 +2,7 @@ dwm - dynamic window manager (liupold's build)
 ============================
 dwm is an extremely fast, small, and dynamic window manager for X.
 
+### Based on dwm-6.2
 
 # Features
 * Clean bar, (no window name)
@@ -10,6 +11,16 @@ dwm is an extremely fast, small, and dynamic window manager for X.
 * Default bar (No bloat),`xsetroot`
 * xrdb (`pywal` supported)
 * Key bindings for media key (volume, brightness)
+* swallowing patch
+* `TERMCMD` launch program in terminal (`config.h`)
+
+# Fonts
+
+```
+static const char *fonts[] = { "Fira Code:size=10", "Font Awesome 5 Free Solid:size=10" };
+```
+
+# Screenshot
 
 ![alt text](2020-10-03-085254_1920x1080_scrot.png)
 
