@@ -1,5 +1,6 @@
 /* See LICENSE file for copyright and license details. */
 #include <X11/XF86keysym.h>
+#include <stdlib.h>
 static char TERMINAL[] = "st";
 
 /* appearance */
@@ -33,7 +34,6 @@ static const Rule rules[] = {
 	 */
 	/* class     instance  title           tags mask  isfloating  isterminal  noswallow  monitor */
 	{ "Gimp",    NULL,     NULL,           0,         1,          0,           0,        -1 },
-	{ "Firefox", NULL,     NULL,           1 << 8,    0,          0,          -1,        -1 },
 	{ "St",      NULL,     NULL,           0,         0,          1,          -1,        -1 },
 	{ NULL,      NULL,     "Event Tester", 0,         1,          0,           1,        -1 }, /* xev */
 };
@@ -66,9 +66,9 @@ static const Layout layouts[] = {
 static char dmenumon[2] = "0"; /* component of dmenucmd, manipulated in spawn() */
 static const char *dmenucmd[] = { "dmenu_run", NULL };
 static const char *termcmd[]  = { TERMINAL, NULL };
-static const char *upvol[]   = { "/usr/bin/pactl", "set-sink-volume", "0", "+5%",NULL };
-static const char *downvol[] = { "/usr/bin/pactl", "set-sink-volume", "0", "-5%",NULL };
-static const char *mutevol[] = { "/usr/bin/pactl", "set-sink-mute","0", "toggle",NULL };
+static const char *upvol[]   = { "/usr/bin/amixer", "sset", "Master", "5%+",NULL };
+static const char *downvol[]   = { "/usr/bin/amixer", "sset", "Master", "5%-",NULL };
+static const char *mutevol[] = { "/usr/bin/amixer", "sset","0", "toggle",NULL };
 static const char *uplight[] = { "/usr/bin/light", "-A",   "+5",  NULL };
 static const char *downlight[] = { "/usr/bin/light", "-U",   "+5",  NULL };
 
@@ -121,9 +121,9 @@ static Key keys[] = {
 	{ MODKEY,          XK_Up,                     spawn, {.v = upvol  } },
 	{ MODKEY,          XK_Right,                  spawn, {.v = uplight  } },
 	{ MODKEY,          XK_Left,                   spawn, {.v = downlight  } },
-	{ MODKEY,                       XK_w,     spawn,     SHCMD("chromium")    },
-	{ MODKEY,                       XK_p,     spawn,     TERMCMD("cmus")      },
-	{ MODKEY,                       XK_slash, spawn,     TERMCMD("lf")        },
+	{ MODKEY,                       XK_w,     spawn,     SHCMD("$BROWSER")    },
+	{ MODKEY,                       XK_p,     spawn,     TERMCMD("$MUSIC_PLAYER")      },
+	{ MODKEY,                       XK_slash, spawn,     TERMCMD("$FILE")        },
 	{ MODKEY,                       XK_n,     spawn,     TERMCMD("newsboat")  },
 	{ MODKEY,                       XK_s,     spawn,     SHCMD("dmenu-cmus")  },
 	{ MODKEY,                       XK_backslash,     spawn,     SHCMD("playerctl -p cmus play-pause || playerctl play-pause") },
