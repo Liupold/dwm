@@ -36,6 +36,7 @@ static const Rule rules[] = {
 	{ "Gimp",    NULL,     NULL,           0,         1,          0,           0,        -1 },
 	{ "St",      NULL,     NULL,           0,         0,          1,          -1,        -1 },
 	{ NULL,      NULL,     "Event Tester", 0,         1,          0,           1,        -1 }, /* xev */
+	{ "GNU Octave",      NULL,    NULL,    0,         1,          0,           1,        -1 }, /* octave */
 };
 
 /* layout(s) */
@@ -123,7 +124,7 @@ static Key keys[] = {
 	{ MODKEY,          XK_Left,                   spawn, {.v = downlight  } },
 	{ MODKEY,                       XK_w,     spawn,     SHCMD("$BROWSER")    },
 	{ MODKEY,                       XK_p,     spawn,     TERMCMD("$MUSIC_PLAYER")      },
-	{ MODKEY,                       XK_slash, spawn,     TERMCMD("$FILE")        },
+	{ MODKEY,                       XK_slash, spawn,     TERMCMD("lf")        },
 	{ MODKEY,                       XK_n,     spawn,     TERMCMD("newsboat")  },
 	{ MODKEY,                       XK_s,     spawn,     SHCMD("dmenu-cmus")  },
 	{ MODKEY,                       XK_backslash,     spawn,     SHCMD("playerctl -p cmus play-pause || playerctl play-pause") },
