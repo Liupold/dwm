@@ -122,12 +122,14 @@ static Key keys[] = {
 	{ MODKEY,          XK_Up,                     spawn, {.v = upvol  } },
 	{ MODKEY,          XK_Right,                  spawn, {.v = uplight  } },
 	{ MODKEY,          XK_Left,                   spawn, {.v = downlight  } },
-	{ MODKEY,                       XK_w,     spawn,     SHCMD("$BROWSER")    },
-	{ MODKEY,                       XK_p,     spawn,     TERMCMD("$MUSIC_PLAYER")      },
-	{ MODKEY,                       XK_slash, spawn,     TERMCMD("lf")        },
-	{ MODKEY,                       XK_n,     spawn,     TERMCMD("newsboat")  },
-	{ MODKEY,                       XK_s,     spawn,     SHCMD("dmenu-cmus")  },
-	{ MODKEY,                       XK_backslash,     spawn,     SHCMD("playerctl -p cmus play-pause || playerctl play-pause") },
+	{ MODKEY,          XK_w,                      spawn,     SHCMD("$BROWSER")    },
+	{ MODKEY,          XK_p,                      spawn,     TERMCMD("$MUSIC_PLAYER")      },
+	{ MODKEY,          XK_slash,                  spawn,     TERMCMD("lf")        },
+	{ MODKEY,          XK_n,                      spawn,     TERMCMD("newsboat")  },
+	{ MODKEY,          XK_s,                      spawn,     SHCMD("dmenu-cmus")  },
+	{ MODKEY,          XK_backslash,              spawn,     SHCMD("cmus-remote --pause") },
+	{ MODKEY,          XK_bracketleft,            spawn,     SHCMD("cmus-remote --prev") },
+	{ MODKEY,          XK_bracketright,           spawn,     SHCMD("cmus-remote --next") },
 };
 
 /* button definitions */
