@@ -37,6 +37,7 @@ static const Rule rules[] = {
 	{ "St",      NULL,     NULL,           0,         0,          1,          -1,        -1 },
 	{ NULL,      NULL,     "Event Tester", 0,         1,          0,           1,        -1 }, /* xev */
 	{ "GNU Octave",      NULL,    NULL,    0,         1,          0,           1,        -1 }, /* octave */
+	{ "matplotlib",      NULL,    NULL,    0,         1,          0,           1,        -1 }, /* matplotlib */
 };
 
 /* layout(s) */
