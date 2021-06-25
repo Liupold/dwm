@@ -4,8 +4,8 @@
 static char TERMINAL[] = "st";
 
 /* appearance */
-static const unsigned int borderpx  = 1;        /* border pixel of windows */
-static const unsigned int gappx     = 20;        /* gaps between windows */
+static const unsigned int borderpx  = 3;        /* border pixel of windows */
+static const unsigned int gappx     = 8;        /* gaps between windows */
 static const unsigned int snap      = 32;       /* snap pixel */
 static const int swallowfloating    = 0;        /* 1 means swallow floating windows by default */
 static const int showbar            = 1;        /* 0 means no bar */
@@ -38,6 +38,7 @@ static const Rule rules[] = {
 	{ NULL,      NULL,     "Event Tester", 0,         1,          0,           1,        -1 }, /* xev */
 	{ "GNU Octave",      NULL,    NULL,    0,         1,          0,           1,        -1 }, /* octave */
 	{ "matplotlib",      NULL,    NULL,    0,         1,          0,           1,        -1 }, /* matplotlib */
+	{ "F_TERM",      NULL,    NULL,    0,         1,          0,           1,        -1 }, /* matplotlib */
 };
 
 /* layout(s) */
@@ -63,13 +64,14 @@ static const Layout layouts[] = {
 /* helper for spawning shell commands in the pre dwm-5.0 fashion */
 #define SHCMD(cmd) { .v = (const char*[]){ "/bin/sh", "-c", cmd, NULL } }
 #define TERMCMD(cmd) { .v = (const char*[]){ TERMINAL,"-e","/bin/sh","-c",cmd,NULL } }
+#define FTERMCMD(cmd) { .v = (const char*[]){ TERMINAL, "-g", "=100x25+490+306", "-c",  "F_TERM", "-e","/bin/sh","-c", cmd, NULL } }
 
 /* commands */
 static char dmenumon[2] = "0"; /* component of dmenucmd, manipulated in spawn() */
 static const char *dmenucmd[] = { "dmenu_run", NULL };
 static const char *termcmd[]  = { TERMINAL, NULL };
-static const char *upvol[]   = { "/usr/bin/amixer", "sset", "Master", "5%+",NULL };
-static const char *downvol[]   = { "/usr/bin/amixer", "sset", "Master", "5%-",NULL };
+static const char *upvol[]   = { "pactl", "set-sink-volume", "@DEFAULT_SINK@", "+5%", NULL };
+static const char *downvol[] = { "pactl", "set-sink-volume", "@DEFAULT_SINK@", "-5%", NULL };
 static const char *mutevol[] = { "/usr/bin/amixer", "sset","0", "toggle",NULL };
 static const char *uplight[] = { "/usr/bin/light", "-A",   "+5",  NULL };
 static const char *downlight[] = { "/usr/bin/light", "-U",   "+5",  NULL };
@@ -124,13 +126,15 @@ static Key keys[] = {
 	{ MODKEY,          XK_Right,                  spawn, {.v = uplight  } },
 	{ MODKEY,          XK_Left,                   spawn, {.v = downlight  } },
 	{ MODKEY,          XK_w,                      spawn,     SHCMD("$BROWSER")    },
-	{ MODKEY,          XK_p,                      spawn,     TERMCMD("$MUSIC_PLAYER")      },
+	{ MODKEY,          XK_p,                      spawn,     FTERMCMD("$MUSIC_PLAYER")      },
 	{ MODKEY,          XK_slash,                  spawn,     TERMCMD("lf")        },
 	{ MODKEY,          XK_n,                      spawn,     TERMCMD("newsboat")  },
 	{ MODKEY,          XK_s,                      spawn,     SHCMD("dmenu-cmus")  },
 	{ MODKEY,          XK_backslash,              spawn,     SHCMD("cmus-remote --pause") },
 	{ MODKEY,          XK_bracketleft,            spawn,     SHCMD("cmus-remote --prev") },
 	{ MODKEY,          XK_bracketright,           spawn,     SHCMD("cmus-remote --next") },
+	{ 0,               XF86XK_Calculator,         spawn,     FTERMCMD("python3 -i -c 'from math import *'") },
+	{ MODKEY,          XK_o,                      spawn,     SHCMD("~/.local/bin/dmenu-search") },
 };
 
 /* button definitions */
