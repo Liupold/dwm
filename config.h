@@ -10,7 +10,7 @@ static const unsigned int snap      = 32;       /* snap pixel */
 static const int swallowfloating    = 0;        /* 1 means swallow floating windows by default */
 static const int showbar            = 1;        /* 0 means no bar */
 static const int topbar             = 1;        /* 0 means bottom bar */
-static const char *fonts[]          = { "Fira Code:size=10", "Font Awesome 5 Free Solid:size=10" };
+static const char *fonts[]          = { "Fira Code:size=8", "Font Awesome 5 Free Solid:size=9" };
 static const char dmenufont[]       = "Fira Code:size=10";
 static char normbgcolor[]           = "#222222";
 static char normbordercolor[]       = "#444444";
@@ -130,9 +130,9 @@ static Key keys[] = {
 	{ MODKEY,          XK_slash,                  spawn,     TERMCMD("lf")        },
 	{ MODKEY,          XK_n,                      spawn,     TERMCMD("newsboat")  },
 	{ MODKEY,          XK_s,                      spawn,     SHCMD("dmenu-cmus")  },
-	{ MODKEY,          XK_backslash,              spawn,     SHCMD("cmus-remote --pause") },
-	{ MODKEY,          XK_bracketleft,            spawn,     SHCMD("cmus-remote --prev") },
-	{ MODKEY,          XK_bracketright,           spawn,     SHCMD("cmus-remote --next") },
+	{ MODKEY,          XK_backslash,              spawn,     SHCMD("playerctl -p cmus,%any,chromium play-pause") },
+	{ MODKEY,          XK_bracketleft,            spawn,     SHCMD("playerctl -p cmus,%any,chromium previous") },
+	{ MODKEY,          XK_bracketright,           spawn,     SHCMD("playerctl -p cmus,%any,chromium next") },
 	{ 0,               XF86XK_Calculator,         spawn,     FTERMCMD("python3 -i -c 'from math import *'") },
 	{ MODKEY,          XK_o,                      spawn,     SHCMD("~/.local/bin/dmenu-search") },
 };
