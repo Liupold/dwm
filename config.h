@@ -1,7 +1,7 @@
 /* See LICENSE file for copyright and license details. */
 #include <X11/XF86keysym.h>
 #include <stdlib.h>
-static char TERMINAL[] = "st";
+static char TERMINAL[] = "urxvtc";
 
 /* appearance */
 static const unsigned int borderpx  = 3;        /* border pixel of windows */
@@ -10,8 +10,8 @@ static const unsigned int snap      = 32;       /* snap pixel */
 static const int swallowfloating    = 0;        /* 1 means swallow floating windows by default */
 static const int showbar            = 1;        /* 0 means no bar */
 static const int topbar             = 1;        /* 0 means bottom bar */
-static const char *fonts[]          = { "Fira Code:size=8", "Font Awesome 5 Free Solid:size=9" };
-static const char dmenufont[]       = "Fira Code:size=10";
+static const char *fonts[]          = { "Fira Code:size=13", "Font Awesome 5 Free Solid:size=14" };
+static const char dmenufont[]       = "Fira Code:size=14";
 static char normbgcolor[]           = "#222222";
 static char normbordercolor[]       = "#444444";
 static char normfgcolor[]           = "#bbbbbb";
@@ -35,10 +35,11 @@ static const Rule rules[] = {
 	/* class     instance  title           tags mask  isfloating  isterminal  noswallow  monitor */
 	{ "Gimp",    NULL,     NULL,           0,         1,          0,           0,        -1 },
 	{ "St",      NULL,     NULL,           0,         0,          1,          -1,        -1 },
+	{ "URxvt",      NULL,     NULL,           0,         0,          1,          -1,        -1 },
 	{ NULL,      NULL,     "Event Tester", 0,         1,          0,           1,        -1 }, /* xev */
 	{ "GNU Octave",      NULL,    NULL,    0,         1,          0,           1,        -1 }, /* octave */
 	{ "matplotlib",      NULL,    NULL,    0,         1,          0,           1,        -1 }, /* matplotlib */
-	{ "F_TERM",      NULL,    NULL,    0,         1,          0,           1,        -1 }, /* matplotlib */
+	{ NULL,  "F_TERM",    NULL,    0,         1,          0,           1,        -1 }, /* floating term */
 };
 
 /* layout(s) */
@@ -64,12 +65,13 @@ static const Layout layouts[] = {
 /* helper for spawning shell commands in the pre dwm-5.0 fashion */
 #define SHCMD(cmd) { .v = (const char*[]){ "/bin/sh", "-c", cmd, NULL } }
 #define TERMCMD(cmd) { .v = (const char*[]){ TERMINAL,"-e","/bin/sh","-c",cmd,NULL } }
-#define FTERMCMD(cmd) { .v = (const char*[]){ TERMINAL, "-g", "=100x25+490+306", "-c",  "F_TERM", "-e","/bin/sh","-c", cmd, NULL } }
+#define FTERMCMD(cmd) { .v = (const char*[]){ TERMINAL, "-g", "=100x25+490+306", "-name",  "F_TERM", "-e","/bin/sh","-c", cmd, NULL } }
 
 /* commands */
 static char dmenumon[2] = "0"; /* component of dmenucmd, manipulated in spawn() */
 static const char *dmenucmd[] = { "dmenu_run", NULL };
 static const char *termcmd[]  = { TERMINAL, NULL };
+static const char *alt_termcmd[]  = { "tabbed", "-c", TERMINAL, "-embed", NULL};
 static const char *upvol[]   = { "pactl", "set-sink-volume", "@DEFAULT_SINK@", "+5%", NULL };
 static const char *downvol[] = { "pactl", "set-sink-volume", "@DEFAULT_SINK@", "-5%", NULL };
 static const char *mutevol[] = { "/usr/bin/amixer", "sset","0", "toggle",NULL };
@@ -80,6 +82,7 @@ static Key keys[] = {
 	/* modifier                     key        function        argument */
 	{ MODKEY,                       XK_d,      spawn,          {.v = dmenucmd } },
 	{ MODKEY,                       XK_Return, spawn,          {.v = termcmd } },
+	{ MODKEY|ShiftMask,             XK_Return, spawn,          {.v = alt_termcmd } },
 	{ MODKEY,                       XK_b,      togglebar,      {0} },
 	{ MODKEY,                       XK_j,      focusstack,     {.i = +1 } },
 	{ MODKEY,                       XK_k,      focusstack,     {.i = -1 } },
@@ -125,16 +128,22 @@ static Key keys[] = {
 	{ MODKEY,          XK_Up,                     spawn, {.v = upvol  } },
 	{ MODKEY,          XK_Right,                  spawn, {.v = uplight  } },
 	{ MODKEY,          XK_Left,                   spawn, {.v = downlight  } },
+	{ MODKEY|ControlMask,          XK_grave,      spawn,     SHCMD("dunstctl history-pop") },
+	{ MODKEY|ControlMask,          XK_space,      spawn,     SHCMD("dunstctl close") },
+	{ MODKEY|ShiftMask|ControlMask,          XK_space,      spawn,     SHCMD("dunstctl close-all") },
+	{ MODKEY|ControlMask,          XK_Return,     spawn,     SHCMD("dunstctl action") },
 	{ MODKEY,          XK_w,                      spawn,     SHCMD("$BROWSER")    },
 	{ MODKEY,          XK_p,                      spawn,     FTERMCMD("$MUSIC_PLAYER")      },
 	{ MODKEY,          XK_slash,                  spawn,     TERMCMD("lf")        },
 	{ MODKEY,          XK_n,                      spawn,     TERMCMD("newsboat")  },
 	{ MODKEY,          XK_s,                      spawn,     SHCMD("dmenu-cmus")  },
-	{ MODKEY,          XK_backslash,              spawn,     SHCMD("playerctl -p cmus,%any,chromium play-pause") },
-	{ MODKEY,          XK_bracketleft,            spawn,     SHCMD("playerctl -p cmus,%any,chromium previous") },
-	{ MODKEY,          XK_bracketright,           spawn,     SHCMD("playerctl -p cmus,%any,chromium next") },
+	{ MODKEY,          XK_backslash,              spawn,     SHCMD("playerctl -p $MUSIC_PLAYER,%any,chromium play-pause") },
+	{ MODKEY,          XK_bracketleft,            spawn,     SHCMD("playerctl -p $MUSIC_PLAYER,%any,chromium previous") },
+	{ MODKEY,          XK_bracketright,           spawn,     SHCMD("playerctl -p $MUSIC_PLAYER,%any,chromium next") },
 	{ 0,               XF86XK_Calculator,         spawn,     FTERMCMD("python3 -i -c 'from math import *'") },
 	{ MODKEY,          XK_o,                      spawn,     SHCMD("~/.local/bin/dmenu-search") },
+	{ MODKEY|ShiftMask,          XK_Down,         spawn,     SHCMD("playerctl -p $MUSIC_PLAYER,%any -i chromium volume 0.1- && playerctl -p cmus,%any -i chromium metadata -f 'PLAYERCTL:[ {{emoji(status)}} {{trunc(title, 30)}} ({{trunc(artist, 20)}}) | {{emoji(volume)}} {{trunc(volume * 100, 4)}}  ]' > /tmp/dwmbar") },
+	{ MODKEY|ShiftMask,          XK_Up,           spawn,     SHCMD("playerctl -p $MUSIC_PLAYER,%any -i chromium volume 0.1+ && playerctl -p cmus,%any -i chromium metadata -f 'PLAYERCTL:[ {{emoji(status)}} {{trunc(title, 30)}} ({{trunc(artist, 20)}}) | {{emoji(volume)}} {{trunc(volume * 100, 4)}}  ]' > /tmp/dwmbar") },
 };
 
 /* button definitions */
