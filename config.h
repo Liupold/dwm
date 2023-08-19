@@ -1,7 +1,7 @@
 /* See LICENSE file for copyright and license details. */
 #include <X11/XF86keysym.h>
 #include <stdlib.h>
-static char TERMINAL[] = "urxvt";
+static char TERMINAL[] = "st";
 
 /* appearance */
 static const unsigned int borderpx  = 3;        /* border pixel of windows */
@@ -40,6 +40,7 @@ static const Rule rules[] = {
   { "GNU Octave",      NULL,     NULL,           0,         1,          0,           1,        -1 }, /* octave */
   { "matplotlib",      NULL,     NULL,           0,         1,          0,           1,        -1 }, /* matplotlib */
   { "F_TERM",          NULL,     NULL,           0,         1,          0,           1,        -1 }, /* floating term */
+  { "gnuplot_qt",      NULL,     NULL,           0,         1,          0,           1,        -1 }, /* floating term */
   { NULL,              NULL, "F_TERM",           0,         1,          0,           1,        -1 }, /* floating term */
 };
 
@@ -65,8 +66,8 @@ static const Layout layouts[] = {
 
 /* helper for spawning shell commands in the pre dwm-5.0 fashion */
 #define SHCMD(cmd) { .v = (const char*[]){ "/bin/sh", "-c", cmd, NULL } }
-#define TERMCMD(cmd) { .v = (const char*[]){ TERMINAL,"-e","/bin/sh","-c",cmd,NULL } }
-#define FTERMCMD(cmd) { .v = (const char*[]){ TERMINAL, "-g", "=100x25+490+306", "-title",  "F_TERM", "-e","/bin/sh","-c", cmd, NULL } }
+#define TERMCMD(cmd) { .v = (const char*[]){ "urxvt","-e","/bin/sh","-c",cmd,NULL } }
+#define FTERMCMD(cmd) { .v = (const char*[]){ "urxvt", "-g", "=100x25+490+306", "-title",  "F_TERM", "-e","/bin/sh","-c", cmd, NULL } }
 
 /* commands */
 static char dmenumon[2] = "0"; /* component of dmenucmd, manipulated in spawn() */
